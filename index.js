@@ -1,11 +1,20 @@
 #!/usr/bin/env node
 const program = require('commander');
-// const chalk = require('chalk');
-// const rp = require('request-promise');
-// const simpleGit = require('simple-git')();
-const package = require('./package.json');
-const creater = require('./lib/craeter.js');
+const execa = require('execa');
 
+const package = require('./package.json');
+const creater = require('./lib/creater.js');
+const fetch = require('./lib/fetch.js');
+
+
+var json = {
+    story : '',
+    module: [],
+    name : '',
+    version : '',
+    author : '',
+    description : ''
+};
 
 program.version(package.version, '-v, --version')
     .command('create <story> <name>')
@@ -14,29 +23,12 @@ program.version(package.version, '-v, --version')
     .option('-s, --store', 'install vuex store')
     .option('-a, --allin', 'install less router store')
     .action(function(story, name, cmd) {
-        // console.log('create story:' + story + ' proName:' + name + (cmd.less ? ' less' : ''));
-
-        let json = {
-            story : story,
-            module: [],
-            name : name,
-            version : '1.0.0',
-            author : '',
-            description : ''
-        };
-
-        creater(json,cmd);
-    // rp(package.template.url).then(function(str) {
-    //     console.log('success\n');
-    //     console.log(str);
-    // }).catch(function(err) {
-    //     console.log(chalk.red('network is error(网络错误，请检测重试)'));
-    //     process.exit(1);
-    // });
+        creater(Object.assign({},json,{story,name,version:'1.0.0'}),cmd);
     });
 
-program.command('fetch <story> <name>').action(function(story, name, cmd) {
-    console.log('fetch:' + story + ' proName:' + name);
+program.command('fetch <story> <name>')
+    .action(function(story, name, cmd) {
+        fetch(Object.assign({},json,{story,name}),cmd);
 });
 
 program.parse(process.argv);
