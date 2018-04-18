@@ -10,7 +10,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "template": {
-    "url": "CooLNuanfeng/test-package"
+    "url": "CooLNuanfeng/template-package"
   },
   "author": "",
   "license": "ISC",
